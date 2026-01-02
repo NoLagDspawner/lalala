@@ -1,439 +1,241 @@
--- DUMPED BY @Greaky @Greaky @Greaky @Greaky @Greaky @Greaky @Greaky
-
-
--- Ensure this script is in StarterPlayerScripts as a LocalScript
-local screenGui = Instance.new("ScreenGui")
-screenGui.Parent = game:GetService("CoreGui")
-
--- Ensure this script is in StarterPlayerScripts as a LocalScript
-local player = game.Players.LocalPlayer
-local playerGui = player:WaitForChild("PlayerGui")
-
-if playerGui:FindFirstChild("IntroLoadingGui") then
-	playerGui.IntroLoadingGui:Destroy()
-end
-
-local LoadingGui = Instance.new("ScreenGui")
-LoadingGui.Name = "IntroLoadingGui"
-LoadingGui.Parent = playerGui
-LoadingGui.DisplayOrder = 999
-LoadingGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-LoadingGui.ResetOnSpawn = false
-
-local Panel = Instance.new("Frame")
-Panel.Size = UDim2.new(0, 360, 0, 120)
-Panel.Position = UDim2.new(0.5, 0, 0.5, 0)
-Panel.AnchorPoint = Vector2.new(0.5, 0.5)
-Panel.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-Panel.BorderSizePixel = 0
-Panel.Parent = LoadingGui
-Instance.new("UICorner", Panel).CornerRadius = UDim.new(0, 16)
-
--- Logo (with space below it)
-local Logo = Instance.new("ImageLabel")
-Logo.Size = UDim2.new(0, 50, 0, 50)
-Logo.Position = UDim2.new(0, 10, 0, 10) -- Top with space below
-Logo.BackgroundTransparency = 1
-Logo.Image = "rbxassetid://111418164316621"
-Logo.Parent = Panel
-Instance.new("UICorner", Logo).CornerRadius = UDim.new(1, 0)
-
--- Channel name (next to logo)
-local NameLabel = Instance.new("TextLabel")
-NameLabel.Text = "Youtube: Shino Scripts"
-NameLabel.Font = Enum.Font.SourceSansBold
-NameLabel.TextSize = 20
-NameLabel.TextColor3 = Color3.new(1, 1, 1)
-NameLabel.BackgroundTransparency = 1
-NameLabel.Position = UDim2.new(0, 70, 0, 14)
-NameLabel.Size = UDim2.new(1, -80, 0, 22)
-NameLabel.TextXAlignment = Enum.TextXAlignment.Left
-NameLabel.Parent = Panel
-
--- Bypassing label (spaced under logo)
-local BypassLabel = Instance.new("TextLabel")
-BypassLabel.Text = "Bypassing Anti Cheat, Please Wait"
-BypassLabel.Font = Enum.Font.SourceSansItalic
-BypassLabel.TextSize = 18
-BypassLabel.TextColor3 = Color3.new(1, 1, 1)
-BypassLabel.BackgroundTransparency = 1
-BypassLabel.Position = UDim2.new(0, 70, 0, 36)
-BypassLabel.Size = UDim2.new(1, -80, 0, 20)
-BypassLabel.TextXAlignment = Enum.TextXAlignment.Left
-BypassLabel.Parent = Panel
-
--- Animated dots on bypass label
-task.spawn(function()
-	local baseText = "Bypassing Anti Cheat, Please Wait"
-	while BypassLabel and BypassLabel.Parent do
-		for i = 0, 3 do
-			BypassLabel.Text = baseText .. string.rep(".", i)
-			task.wait(0.4)
-		end
-	end
-end)
-
--- Loading bar background
-local BarBackground = Instance.new("Frame")
-BarBackground.Size = UDim2.new(0.9, 0, 0, 18)
-BarBackground.Position = UDim2.new(0.05, 0, 0, 62)
-BarBackground.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-BarBackground.BorderSizePixel = 0
-BarBackground.Parent = Panel
-Instance.new("UICorner", BarBackground).CornerRadius = UDim.new(1, 0)
-
--- Loading bar fill
-local LoadingBar = Instance.new("Frame")
-LoadingBar.Size = UDim2.new(0, 0, 1, 0)
-LoadingBar.BackgroundColor3 = Color3.fromRGB(0, 128, 0)
-LoadingBar.BorderSizePixel = 0
-LoadingBar.Parent = BarBackground
-Instance.new("UICorner", LoadingBar).CornerRadius = UDim.new(1, 0)
-
--- Subscribe text (no space under it)
-local SubscribeText = Instance.new("TextLabel")
-SubscribeText.Text = "Subscribe To Shino Scripts"
-SubscribeText.Font = Enum.Font.SourceSans
-SubscribeText.TextSize = 18
-SubscribeText.TextColor3 = Color3.fromRGB(255, 255, 255)
-SubscribeText.BackgroundTransparency = 1
-SubscribeText.Position = UDim2.new(0.05, 0, 0, 90)
-SubscribeText.Size = UDim2.new(0.5, -10, 0, 20)
-SubscribeText.TextXAlignment = Enum.TextXAlignment.Left
-SubscribeText.Parent = Panel
-
--- Copy button next to it (no space below)
-local CopyButton = Instance.new("TextButton")
-CopyButton.Size = UDim2.new(0.4, 0, 0, 20)
-CopyButton.Position = UDim2.new(0.55, 0, 0, 90)
-CopyButton.Text = "Copy Channel Link"
-CopyButton.Font = Enum.Font.SourceSansSemibold
-CopyButton.TextSize = 16
-CopyButton.BackgroundColor3 = Color3.fromRGB(255, 60, 60)
-CopyButton.TextColor3 = Color3.new(1, 1, 1)
-CopyButton.Parent = Panel
-Instance.new("UICorner", CopyButton).CornerRadius = UDim.new(0, 8)
-
-CopyButton.MouseButton1Click:Connect(function()
-	if setclipboard then
-		setclipboard("https://www.youtube.com/@ShinoScriptsz")
-		CopyButton.Text = "Copied!"
-		task.wait(1)
-		CopyButton.Text = "Copy Channel Link"
-	end
-end)
-
--- Loading animation
-local steps = 100
-local delayTime = 3 / steps
-for i = 1, steps do
-	LoadingBar.Size = UDim2.new(i / steps, 0, 1, 0)
-	task.wait(delayTime)
-end
-
--- Fade out everything
-for i = 1, 10 do
-	local t = i / 10
-	Panel.BackgroundTransparency = t
-	Logo.ImageTransparency = t
-	NameLabel.TextTransparency = t
-	BypassLabel.TextTransparency = t
-	LoadingBar.BackgroundTransparency = t
-	BarBackground.BackgroundTransparency = t
-	SubscribeText.TextTransparency = t
-	CopyButton.BackgroundTransparency = t
-	CopyButton.TextTransparency = t
-	task.wait(0.04)
-end
-
-LoadingGui:Destroy()
-
-
-local notificationFrame = Instance.new("Frame")
-notificationFrame.Size = UDim2.new(0.4, 0, 0.08, 0)
-notificationFrame.Position = UDim2.new(0.3, 0, 0.9, 0)
-notificationFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-notificationFrame.BackgroundTransparency = 0.3
-notificationFrame.BorderSizePixel = 0
-notificationFrame.Parent = screenGui
-notificationFrame.Visible = false
-
-local notificationUICorner = Instance.new("UICorner")
-notificationUICorner.CornerRadius = UDim.new(0.1, 0)
-notificationUICorner.Parent = notificationFrame
-
-local notificationGradient = Instance.new("UIGradient")
-notificationGradient.Color = ColorSequence.new{
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(45, 45, 45)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(25, 25, 25))
-}
-notificationGradient.Parent = notificationFrame
-
-local notificationText = Instance.new("TextLabel")
-notificationText.Size = UDim2.new(1, 0, 1, 0)
-notificationText.Position = UDim2.new(0, 0, 0, 0)
-notificationText.BackgroundTransparency = 1
-notificationText.TextColor3 = Color3.fromRGB(255, 255, 255)
-notificationText.TextSize = 20
-notificationText.Font = Enum.Font.GothamBold
-notificationText.TextScaled = true
-notificationText.Parent = notificationFrame
-
-local function showNotification(message)
-    notificationText.Text = message
-    notificationFrame.Visible = true
-    notificationFrame:TweenPosition(UDim2.new(0.3, 0, 0.85, 0), "Out", "Quad", 0.5, true)
-    wait(3)
-    notificationFrame:TweenPosition(UDim2.new(0.3, 0, 1.1, 0), "Out", "Quad", 0.5, true)
-    wait(0.5)
-    notificationFrame.Visible = false
-end
-
-
--- Create ScreenGui
-local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "CustomPanelGui"
-ScreenGui.Parent = screenGui
-ScreenGui.DisplayOrder = 999
-ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-
--- Panel inside the screenGui with a proper red outline using UIStroke
-local PanelFrame = Instance.new("Frame")
-PanelFrame.Name = "PanelFrame"
-PanelFrame.Parent = ScreenGui
-PanelFrame.Position = UDim2.new(0.5, -175, 0.5, -115)
-PanelFrame.Size = UDim2.new(0, 350, 0, 230)
-PanelFrame.BackgroundColor3 = Color3.fromRGB(24, 24, 24)
-PanelFrame.BorderSizePixel = 0
-PanelFrame.Active = true
-PanelFrame.Draggable = true
-
--- Rounded corners
-local PanelFrameCorner = Instance.new("UICorner")
-PanelFrameCorner.CornerRadius = UDim.new(0, 16)
-PanelFrameCorner.Parent = PanelFrame
-
--- Red outline using UIStroke
-local PanelStroke = Instance.new("UIStroke")
-PanelStroke.Thickness = 3
-PanelStroke.Color = Color3.fromRGB(210, 42, 42)
-PanelStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-PanelStroke.Parent = PanelFrame
-
--- Create title
-local Title = Instance.new("TextLabel")
-Title.Parent = PanelFrame
-Title.Size = UDim2.new(1, 0, 0, 40)
-Title.BackgroundTransparency = 1
-Title.Text = "Weapon Spawner"
-Title.Font = Enum.Font.SourceSansBold
-Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-Title.TextScaled = true
-
--- Create input box
-local TextBox = Instance.new("TextBox")
-TextBox.Parent = PanelFrame
-TextBox.Size = UDim2.new(0.9, 0, 0, 40)
-TextBox.Position = UDim2.new(0.05, 0, 0.25, 0)
-TextBox.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
-TextBox.BorderColor3 = Color3.fromRGB(55, 55, 55)
-TextBox.PlaceholderText = "Enter Item Name..."
-TextBox.Text = ""
-TextBox.Font = Enum.Font.SourceSans
-TextBox.TextScaled = true
-TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-
--- Add rounded corners to the TextBox
-local TextBoxCorner = Instance.new("UICorner")
-TextBoxCorner.CornerRadius = UDim.new(0, 12)
-TextBoxCorner.Parent = TextBox
-
--- Create "Unbox Item" button
-local UnboxButton = Instance.new("TextButton")
-UnboxButton.Parent = PanelFrame
-UnboxButton.Size = UDim2.new(0.9, 0, 0, 40)
-UnboxButton.Position = UDim2.new(0.05, 0, 0.5, 0)
-UnboxButton.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
-UnboxButton.BorderSizePixel = 4
-UnboxButton.BorderColor3 = Color3.fromRGB(55, 55, 55)
-UnboxButton.Text = "Spawn Item"
-UnboxButton.Font = Enum.Font.SourceSansBold
-UnboxButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-UnboxButton.TextScaled = true
-
--- Add rounded corners to the Unbox button
-local UnboxButtonCorner = Instance.new("UICorner")
-UnboxButtonCorner.CornerRadius = UDim.new(0, 12)
-UnboxButtonCorner.Parent = UnboxButton
-
--- Create "Save to Database" button
-local SaveButton = Instance.new("TextButton")
-SaveButton.Parent = PanelFrame
-SaveButton.Size = UDim2.new(0.9, 0, 0, 40)
-SaveButton.Position = UDim2.new(0.05, 0, 0.7, 0)
-SaveButton.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
-SaveButton.BorderSizePixel = 4
-SaveButton.BorderColor3 = Color3.fromRGB(55, 55, 55)
-SaveButton.Text = "Save to Database"
-SaveButton.Font = Enum.Font.SourceSansBold
-SaveButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-SaveButton.TextScaled = true
-
--- Add rounded corners to the Save to Database button
-local SaveButtonCorner = Instance.new("UICorner")
-SaveButtonCorner.CornerRadius = UDim.new(0, 12)
-SaveButtonCorner.Parent = SaveButton
-
--- Credits Label
-local CreditsLabel = Instance.new("TextLabel")
-CreditsLabel.Parent = PanelFrame
-CreditsLabel.Size = UDim2.new(1, 0, 0, 20)
-CreditsLabel.Position = UDim2.new(0, 0, 0.90, 0)
-CreditsLabel.BackgroundTransparency = 1
-CreditsLabel.Text = "By Shino Scripts"
-CreditsLabel.Font = Enum.Font.SourceSansItalic
-CreditsLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-CreditsLabel.TextScaled = true
-
-local crate = "Christmas2024Box"
-local _R = game:GetService("ReplicatedStorage")
-local _B = _R:WaitForChild("Remotes"):WaitForChild("Shop"):WaitForChild("BoxController")
-
+--// SERVICES
+local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
+local LocalPlayer = Players.LocalPlayer
+local Camera = workspace.CurrentCamera
 
-local function fireBoxController(crate, item)
-    _B:Fire(crate, item)
+--// COLORS
+local COLOR_DEFAULT = Color3.fromRGB(0,255,0)
+local COLOR_GUN = Color3.fromRGB(0,170,255)
+local COLOR_KNIFE = Color3.fromRGB(255,0,0)
+
+--// STATES
+local ESP_ENABLED = false
+local AIMBOT_ENABLED = false
+local FOCUS_GUN = false
+local FOCUS_KNIFE = false
+local MANUAL_FOCUS = false
+
+--// STORAGE
+local Highlights = {}
+local Labels = {}
+local WeaponCache = {}
+
+--// GUI
+local gui = Instance.new("ScreenGui", LocalPlayer:WaitForChild("PlayerGui"))
+gui.ResetOnSpawn = false
+local frame = Instance.new("Frame", gui)
+frame.Size = UDim2.fromOffset(260,260)
+frame.Position = UDim2.fromScale(0.02,0.35)
+frame.BackgroundColor3 = Color3.fromRGB(25,25,25)
+frame.Active = true
+frame.Draggable = true
+Instance.new("UICorner", frame)
+
+local function createButton(text, y)
+    local b = Instance.new("TextButton", frame)
+    b.Size = UDim2.new(1,-20,0,34)
+    b.Position = UDim2.new(0,10,0,y)
+    b.BackgroundColor3 = Color3.fromRGB(40,40,40)
+    b.TextColor3 = Color3.new(1,1,1)
+    b.Font = Enum.Font.GothamBold
+    b.TextSize = 13
+    b.Text = text
+    Instance.new("UICorner", b)
+    return b
 end
 
-local function spawnWeapon(name)
-    local DataBase = require(game:GetService("ReplicatedStorage").Database.Sync.Item)
-    local PlayerData = require(game:GetService("ReplicatedStorage").Modules.ProfileData)
+local espBtn = createButton("ESP: OFF",15)
+local aimBtn = createButton("ESP + AIMBOT: OFF",55)
+local gunBtn = createButton("FOCUS GUN: OFF",95)
+local knifeBtn = createButton("FOCUS KNIFE: OFF",135)
 
-    local PlayerWeapons = PlayerData.Weapons
+local credit = Instance.new("TextLabel", frame)
+credit.Size = UDim2.new(1,0,0,20)
+credit.Position = UDim2.new(0,0,1,-22)
+credit.BackgroundTransparency = 1
+credit.Text = "By Jorge03IsGamer"
+credit.TextColor3 = Color3.fromRGB(150,150,150)
+credit.Font = Enum.Font.Gotham
+credit.TextSize = 12
 
-    RunService:BindToRenderStep("InventoryUpdate", 0, function()
-        -- Safely update the Owned table without replacing it
-        if not PlayerWeapons.Owned[name] then
-            PlayerWeapons.Owned[name] = 1
-        else
-            PlayerWeapons.Owned[name] += 1
+--// DETECT WEAPON
+local function detectWeapon(player)
+    local char = player.Character
+    if not char then return nil end
+
+    local function checkTools(parent)
+        for _, t in ipairs(parent:GetChildren()) do
+            if t:IsA("Tool") then
+                local name = t.Name:lower()
+                if name:find("gun") then return "gun" end
+                if name:find("knife") then return "knife" end
+            end
         end
+        return nil
+    end
 
-        -- Optional: unbind after update to avoid re-running
-        RunService:UnbindFromRenderStep("InventoryUpdate")
+    local w = checkTools(char) or (player:FindFirstChild("Backpack") and checkTools(player.Backpack))
+    WeaponCache[player] = w
+    return w
+end
+
+--// CREATE ESP & LABEL
+local function createESP(player)
+    local char = player.Character
+    if not char or not char:FindFirstChild("Head") then return end
+    if Highlights[player] then return end
+
+    local hl = Instance.new("Highlight")
+    hl.Adornee = char
+    hl.FillTransparency = 0.5
+    hl.OutlineTransparency = 0.5
+    hl.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+    hl.Parent = char
+    Highlights[player] = hl
+
+    local lbl = Instance.new("BillboardGui", char.Head)
+    lbl.Size = UDim2.fromOffset(200,30)
+    lbl.StudsOffset = Vector3.new(0,2.4,0)
+    lbl.AlwaysOnTop = true
+    local t = Instance.new("TextLabel", lbl)
+    t.Size = UDim2.fromScale(1,1)
+    t.BackgroundTransparency = 1
+    t.TextStrokeTransparency = 0
+    t.Font = Enum.Font.GothamBold
+    t.TextSize = 14
+    Labels[player] = t
+end
+
+--// HANDLE PLAYER
+local function handlePlayer(player)
+    player.CharacterAdded:Connect(function()
+        wait(0.1)
+        createESP(player)
+        WeaponCache[player] = nil
+        if player == LocalPlayer and not MANUAL_FOCUS then
+            FOCUS_GUN = false
+            FOCUS_KNIFE = false
+        end
     end)
+    if player.Character then createESP(player) end
 end
 
--- Example usage:
--- fireBoxController(crate, "CandyBlade")
--- spawnWeapon("CandyBlade")
+for _, p in ipairs(Players:GetPlayers()) do handlePlayer(p) end
+Players.PlayerAdded:Connect(handlePlayer)
 
+--// VISIBILITY
+local rayParams = RaycastParams.new()
+rayParams.FilterType = Enum.RaycastFilterType.Blacklist
+rayParams.IgnoreWater = true
+local function visible(head)
+    if not head or not head.Parent or not LocalPlayer.Character or not LocalPlayer.Character:FindFirstChild("Head") then return false end
+    rayParams.FilterDescendantsInstances = {LocalPlayer.Character}
+    local r = workspace:Raycast(LocalPlayer.Character.Head.Position, head.Position - LocalPlayer.Character.Head.Position, rayParams)
+    return not r or r.Instance:IsDescendantOf(head.Parent)
+end
 
-UnboxButton.MouseButton1Click:Connect(function()
-    local itemName = TextBox.Text
-    if itemName ~= "" then
-        fireBoxController(crate, itemName)
-        showNotification("Rolling box for: " .. itemName)
-        task.delay(3, function()
-            spawnWeapon(itemName)
-            game.Players.LocalPlayer.Character:BreakJoints()
-        end)
-    else
-        showNotification("Please enter an item name.")
+--// GET TARGET
+local function getTarget()
+    local closest, bestDist = nil, math.huge
+    for p, hl in pairs(Highlights) do
+        if p ~= LocalPlayer and p.Character and p.Character:FindFirstChild("Head") then
+            local head = p.Character.Head
+            local hum = p.Character:FindFirstChildOfClass("Humanoid")
+            if hum and hum.Health > 0 and visible(head) then
+                local w = detectWeapon(p)
+                if (FOCUS_GUN and w ~= "gun") or (FOCUS_KNIFE and w ~= "knife") then continue end
+                local d = (head.Position - Camera.CFrame.Position).Magnitude
+                if d < bestDist then bestDist = d closest = head end
+            end
+        end
+    end
+    return closest
+end
+
+--// UPDATE WEAPONS & ESP
+spawn(function()
+    while wait(1) do
+        for _, player in ipairs(Players:GetPlayers()) do
+            detectWeapon(player)
+        end
     end
 end)
 
--- Load External Modules
-local boxmodule = require(game:GetService("ReplicatedStorage").Modules.BoxModule)
-local poop = getsenv(game:GetService("Players").LocalPlayer.PlayerGui.MainGUI.Inventory.NewItem)._G
-local itemdatabase = require(game:GetService("ReplicatedStorage").Database.Sync.Item)
-
--- Get Random Mystery Box
-local function getrandombox()
-    local boxes = require(game:GetService("ReplicatedStorage").Database.Sync.MysteryBox)
-    if not boxes or next(boxes) == nil then return nil end
-    local keys = {}
-    for k, _ in pairs(boxes) do
-        table.insert(keys, k)
+--// MAIN LOOP
+RunService.RenderStepped:Connect(function()
+    for p, hl in pairs(Highlights) do
+        if not p.Character or not p.Character:FindFirstChild("Head") then
+            hl:Destroy()
+            Highlights[p] = nil
+            if Labels[p] then Labels[p]:Destroy() Labels[p]=nil end
+        else
+            local head = p.Character.Head
+            local lbl = Labels[p]
+            local dist = math.floor((head.Position - Camera.CFrame.Position).Magnitude)
+            if lbl then
+                lbl.Text = "[@ "..p.Name.." | "..dist.." Studs]"
+            end
+            local w = WeaponCache[p] or detectWeapon(p)
+            if w == "gun" then hl.FillColor = COLOR_GUN
+            elseif w == "knife" then hl.FillColor = COLOR_KNIFE
+            else hl.FillColor = COLOR_DEFAULT end
+        end
     end
-    return keys[math.random(1, #keys)]
-end
 
--- Open Crate with Selected Item
-local function opencrate(ITEM_NAME)
-    if ITEM_NAME and itemdatabase[ITEM_NAME] then
-        print("Spawning:", ITEM_NAME)
-        boxmodule.OpenBox(getrandombox(), ITEM_NAME)
-        poop.NewItem(ITEM_NAME, nil, nil, "Weapons", 1)
-    else
-        warn("Invalid item selection!")
+    -- Auto focus knife if you have gun (only if not manual)
+    if AIMBOT_ENABLED and not MANUAL_FOCUS then
+        local myWeapon = WeaponCache[LocalPlayer] or detectWeapon(LocalPlayer)
+        if myWeapon == "gun" then
+            FOCUS_KNIFE = true
+            FOCUS_GUN = false
+        end
     end
-end
 
-UnboxButton.MouseButton1Click:Connect(function()
-    local itemName = TextBox.Text
-    if itemName == "" then return end
-    opencrate(itemName)
+    -- AIMBOT
+    if AIMBOT_ENABLED and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Head") then
+        local t = getTarget()
+        if t then
+            Camera.CFrame = CFrame.new(Camera.CFrame.Position, t.Position)
+        end
+    end
 end)
 
-local function showPopup(action, itemName, duration)
-    local PopupFrame = Instance.new("Frame")
-    PopupFrame.Parent = ScreenGui
-    PopupFrame.Size = UDim2.new(0, 300, 0, 150)
-    PopupFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
-    PopupFrame.AnchorPoint = Vector2.new(0.5, 0.5)
-    PopupFrame.BackgroundColor3 = Color3.fromRGB(24, 24, 24)
-
-    -- Add rounded corners to the popup
-    local PopupFrameCorner = Instance.new("UICorner")
-    PopupFrameCorner.CornerRadius = UDim.new(0, 16)
-    PopupFrameCorner.Parent = PopupFrame
-
--- Red outline using UIStroke
-local PopupStroke = Instance.new("UIStroke")
-PopupStroke.Thickness = 3
-PopupStroke.Color = Color3.fromRGB(210, 42, 42)
-PopupStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-PopupStroke.Parent = PopupFrame
-
-    local PopupText = Instance.new("TextLabel")
-    PopupText.Parent = PopupFrame
-    PopupText.Size = UDim2.new(1, -20, 0.5, 0)
-    PopupText.Position = UDim2.new(0, 10, 0, 10)
-    PopupText.BackgroundTransparency = 1
-    PopupText.Text = action .. " \"" .. itemName .. "\"..."
-    PopupText.Font = Enum.Font.SourceSansBold
-    PopupText.TextColor3 = Color3.fromRGB(255, 255, 255)
-    PopupText.TextScaled = true
-
-    local LoadingBarBackground = Instance.new("Frame")
-    LoadingBarBackground.Parent = PopupFrame
-    LoadingBarBackground.Size = UDim2.new(0.8, 0, 0.1, 0)
-    LoadingBarBackground.Position = UDim2.new(0.1, 0, 0.7, 0)
-    LoadingBarBackground.BackgroundColor3 = Color3.fromRGB(150, 150, 150)
-
-    local LoadingBar = Instance.new("Frame")
-    LoadingBar.Parent = LoadingBarBackground
-    LoadingBar.Size = UDim2.new(0, 0, 1, 0)
-    LoadingBar.BackgroundColor3 = Color3.fromRGB(49, 203, 74)
-
-    local steps = 100
-    local delayTime = 3 / steps
-    for i = 1, steps do
-        LoadingBar.Size = UDim2.new(i / steps, 0, 1, 0)
-        wait(delayTime)
+--// BUTTONS
+espBtn.MouseButton1Click:Connect(function()
+    ESP_ENABLED = not ESP_ENABLED
+    if ESP_ENABLED or AIMBOT_ENABLED then
+        for _, p in ipairs(Players:GetPlayers()) do createESP(p) end
+    else
+        for _, hl in pairs(Highlights) do hl:Destroy() end
+        for _, lbl in pairs(Labels) do lbl:Destroy() end
+        Highlights = {}
+        Labels = {}
     end
+    espBtn.Text = "ESP: "..(ESP_ENABLED and "ON" or "OFF")
+end)
 
-    local success = action == "Spawning" and spawnPet(itemName)
-    PopupText.Text = success and (action == "Spawning" and "Weapon Spawned Successfully!" or "Saved Successfully!") or "Successfully " .. action .. "!"
+aimBtn.MouseButton1Click:Connect(function()
+    AIMBOT_ENABLED = not AIMBOT_ENABLED
+    ESP_ENABLED = ESP_ENABLED or AIMBOT_ENABLED
+    if AIMBOT_ENABLED then
+        for _, p in ipairs(Players:GetPlayers()) do createESP(p) end
+    end
+    aimBtn.Text = "ESP + AIMBOT: "..(AIMBOT_ENABLED and "ON" or "OFF")
+end)
 
-    wait(1.5)
-    PopupFrame:Destroy()
-end
+gunBtn.MouseButton1Click:Connect(function()
+    FOCUS_GUN = not FOCUS_GUN
+    if FOCUS_GUN then FOCUS_KNIFE = false end
+    MANUAL_FOCUS = true
+    gunBtn.Text = "FOCUS GUN: "..(FOCUS_GUN and "ON" or "OFF")
+    knifeBtn.Text = "FOCUS KNIFE: OFF"
+end)
 
-
-SaveButton.MouseButton1Click:Connect(function()
-    local itemName = TextBox.Text
-    if itemName == "" then return end
-    showPopup("Saving", itemName, 300)
+knifeBtn.MouseButton1Click:Connect(function()
+    FOCUS_KNIFE = not FOCUS_KNIFE
+    if FOCUS_KNIFE then FOCUS_GUN = false end
+    MANUAL_FOCUS = true
+    knifeBtn.Text = "FOCUS KNIFE: "..(FOCUS_KNIFE and "ON" or "OFF")
+    gunBtn.Text = "FOCUS GUN: OFF"
 end)
